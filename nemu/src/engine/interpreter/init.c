@@ -4,10 +4,10 @@ void sdb_mainloop();
 
 void engine_start() {
 #ifdef CONFIG_TARGET_AM
-  printf("leitanglong%d\n", nemu_state.state);
-  cpu_exec(-1);
+    cpu_exec(-1);
 #else
   /* Receive commands from user. */
+  printf("leitanglong%d\n", nemu_state.state);
   sdb_mainloop();
 #endif
 }
