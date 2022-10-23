@@ -89,7 +89,7 @@ void sdb_mainloop() {
   }
 
   for (char *str; (str = rl_gets()) != NULL; ) {
-    printf("nemu_state=%d\n", nemu_state.state);
+    printf("before nemu_state=%d\n", nemu_state.state);
 	char *str_end = str + strlen(str);
 
     /* extract the first token as the command */
@@ -118,6 +118,7 @@ void sdb_mainloop() {
     }
 
     if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
+  	printf("after nemu_state=%d\n", nemu_state.state);
   }
 }
 
