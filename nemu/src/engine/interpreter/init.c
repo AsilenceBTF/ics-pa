@@ -7,7 +7,6 @@ void engine_start() {
     cpu_exec(-1);
 #else
   /* Receive commands from user. */
-  printf("leitanglong%d\n", nemu_state.state);
   sdb_mainloop();
 #endif
 }

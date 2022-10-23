@@ -34,6 +34,7 @@ static int cmd_c(char *args) {
 
 
 static int cmd_q(char *args) {
+  // nemu_state = 
   return -1;
 }
 
@@ -88,7 +89,8 @@ void sdb_mainloop() {
   }
 
   for (char *str; (str = rl_gets()) != NULL; ) {
-    char *str_end = str + strlen(str);
+    printf("nemu_state=%d\n", nemu_state.state);
+	char *str_end = str + strlen(str);
 
     /* extract the first token as the command */
     char *cmd = strtok(str, " ");
