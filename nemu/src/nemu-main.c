@@ -9,9 +9,10 @@ int main(int argc, char *argv[]) {
   /* Initialize the monitor. */
 #ifdef CONFIG_TARGET_AM
   am_init_monitor();
-  printf("am_init");
+  printf("am_init\n");
 #else
   init_monitor(argc, argv);
+  printf("init\n");
 #endif
 
   /* Start engine. */
