@@ -87,7 +87,7 @@ void sdb_mainloop() {
     cmd_c(NULL);
     return;
   }
-
+  printf("running=%d\n", NEMU_RUNNING);
   for (char *str; (str = rl_gets()) != NULL; ) {
     printf("before nemu_state=%d\n", nemu_state.state);
 	char *str_end = str + strlen(str);
