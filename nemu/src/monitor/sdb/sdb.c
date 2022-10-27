@@ -40,6 +40,8 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 
+static int cmd_si(char *args);
+
 static struct {
   const char *name;
   const char *description;
@@ -48,6 +50,7 @@ static struct {
   { "help", "Display informations about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
+  { "si", "Step one instruction exactly", cmd_si}
 
   /* TODO: Add more commands */
 
@@ -78,6 +81,30 @@ static int cmd_help(char *args) {
   return 0;
 }
 
+static void str_to_uint64(char *str, uint64_t *n) {
+	uint64_t result = 0;
+	int len = strlen(str), i;
+	for (i = 0; i < len; ++i) {
+		if (str[i] < '0' || str[i] > '9') {
+			return;
+		}
+		result = result*10 + (str[i] - '0');
+	}
+	*n = result;
+}
+static int cmd_si(char *args) {	
+	printf("test cmd_si\n");
+	printf("args:%s\n", args);
+	uint64_t step = 1;
+	char *arg = strtok(NULL, " ");
+	if (NULL != arg) {
+		str_to_uint64(arg, &step);
+	}
+	printf("step:%lu\n", step);
+	cpu_exec(step);	
+	return 0;		
+}
+
 void sdb_set_batch_mode() {
   is_batch_mode = true;
 }
@@ -87,9 +114,7 @@ void sdb_mainloop() {
     cmd_c(NULL);
     return;
   }
-  printf("running=%d\n", NEMU_RUNNING);
   for (char *str; (str = rl_gets()) != NULL; ) {
-    printf("before nemu_state=%d\n", nemu_state.state);
 	char *str_end = str + strlen(str);
 
     /* extract the first token as the command */
@@ -118,7 +143,6 @@ void sdb_mainloop() {
     }
 
     if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
-  	printf("after nemu_state=%d\n", nemu_state.state);
   }
 }
 
