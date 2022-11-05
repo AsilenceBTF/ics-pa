@@ -42,6 +42,8 @@ static int cmd_help(char *args);
 
 static int cmd_si(char *args);
 
+static int cmd_info(char *args);
+
 static struct {
   const char *name;
   const char *description;
@@ -50,13 +52,39 @@ static struct {
   { "help", "Display informations about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  { "si", "Step one instruction exactly", cmd_si}
-
+  { "si", "Step one instruction exactly", cmd_si},
+	{ "info", "Generic command for showing things about the program being debugged.", cmd_info}
   /* TODO: Add more commands */
-
 };
 
 #define NR_CMD ARRLEN(cmd_table)
+
+static int cmd_info(char *args) {
+	char *arg = strtok(NULL, " ");
+	int i;
+	if (NULL == arg)  {
+		for (i = 0; i < NR_CMD; ++i) {
+			if (strcmp("info", cmd_table[i].name) == 0) {
+				printf("info - %s\n", cmd_table[i].description);
+				break;
+			}
+		}
+	} else {
+   	if (strcmp("r", arg) == 0) {
+			isa_reg_display();	
+		} else {
+			bool success;
+			word_t reg_value = isa_reg_str2val(arg, &success);
+			if (success) {
+				printf("%-5s  0x%032x\n", arg, reg_value);	
+			} else {
+				printf("register %s not exist\n", arg);	
+			}
+		}
+	}
+	return 0;
+}
+	
 
 static int cmd_help(char *args) {
   /* extract the first argument */
@@ -92,6 +120,7 @@ static void str_to_uint64(char *str, uint64_t *n) {
 	}
 	*n = result;
 }
+
 static int cmd_si(char *args) {	
 	printf("test cmd_si\n");
 	printf("args:%s\n", args);
